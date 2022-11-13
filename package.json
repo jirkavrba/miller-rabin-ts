@@ -1,0 +1,10 @@
+{
+  "name": "miller-rabin-ts",
+  "version": "1.0.0",
+  "description": "A Miller-Rabin primality test implementation for TypeScript",
+  "main": "index.js",
+  "repository": "https://github.com/jirkavrba/miller-rabin-ts",
+  "author": "Jiří Vrba <jiri@vrba.dev>",
+  "license": "MIT",
+  "private": false
+}
