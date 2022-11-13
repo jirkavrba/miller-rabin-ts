@@ -1,3 +1,15 @@
+// Find s and d such that n − 1 = 2^s * d by factorizing out powers of 2
+const findSD = (n: bigint): { s: bigint, d: bigint } => {
+    let s = 0n;
+    let d = (n - 1n);
+
+    while (d % 2n === 0n) {
+        s++;
+        d /= 2n; // TODO: Can this be speeded by using bit shifting hacks?
+    }
+
+    return { s, d }
+}
 
 /**
  * Tests, whether the provided integer n is a prime number based on the Miller-Rabin primality test
@@ -14,11 +26,13 @@ export const test = (n: bigint, k: number): boolean => {
     }
 
     // Numbers < 2 and even numbers can be trivially excluded from the test
-    if (n <= 2 || n % 2n === 0n) {
+    if (n <= 2n || n % 2n === 0n) {
         return false;
     }
 
-    // TODO
+    // let s > 0 and d odd > 0 such that n − 1 = 2^s * d 
+    const { s, d } = findSD(n);
+
 
     return false;
 };
