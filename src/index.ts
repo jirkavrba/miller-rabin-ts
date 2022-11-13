@@ -32,7 +32,7 @@ const random = (low: bigint, high: bigint): bigint => {
  * @param {number} k Number of testing rounds to perform
  * @returns 
  */
-export const test = (n: bigint, k: number): boolean => {
+export const isProbablePrime = (n: bigint, k: number): boolean => {
     if (k < 1) {
         throw RangeError("The number of testing rounds must be greater than zero!");
     }
