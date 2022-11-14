@@ -23,6 +23,23 @@ const random = (low: bigint, high: bigint): bigint => {
     return low + bytes.reduce((acc, byte) => ((acc + BigInt(byte & 1)) << 1n) , BigInt(0));
 }
 
+// Return a modular exponentiation that equals
+// b^e mod n
+const modExp = (b: bigint, e: bigint, n: bigint): bigint => {
+    let result = 1n;
+
+    while (e > 0) {
+        if ((e & 1n) === 0n) {
+            result = result * b % n;
+        }
+
+        e >>= 1n;
+        b = b ** 2n % n;
+    }
+
+    return result;
+}
+
 /**
  * Tests, whether the provided integer n is a prime number based on the Miller-Rabin primality test
  * 
@@ -38,12 +55,34 @@ export const isProbablePrime = (n: bigint, k: number): boolean => {
     }
 
     // Numbers < 2 and even numbers can be trivially excluded from the test
-    if (n <= 2n || n % 2n === 0n) {
+    if (n <= 2n || (n & 1n) === 0n) {
         return false;
     }
 
     // let s > 0 and d odd > 0 such that n − 1 = 2^s * d 
     const { s, d } = findSD(n);
+    
+    for (let i = 0; i < k; i++) {
+        let a = random(2n, n - 2n);
+        let x = modExp(a, d, n);
+        let y = 0n;
 
-    return false;
+        for (let j = 0; j < s; j++) {
+            y = modExp(x, 2n, n);
+            
+            // Nontrivial square root of 1 modulo n
+            if (y === 1n && x !== 1n && x !== n - 1n) {
+                return false;
+            }
+
+            x = y;
+        }
+
+        if (y !== 1n) {
+            return false;
+        }
+    }
+
+    // The number is probably prime
+    return true;
 };
