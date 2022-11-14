@@ -45,14 +45,16 @@ const modExp = (b: bigint, e: bigint, n: bigint): bigint => {
  * 
  * @link https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
  * 
- * @param {bigint} n The integer that should be tested for primality
+ * @param {bigint | string} input The integer that should be tested for primality
  * @param {number} k Number of testing rounds to perform
  * @returns 
  */
-export const isProbablePrime = (n: bigint, k: number): boolean => {
+export const isProbablePrime = (input: bigint | string, k: number): boolean => {
     if (k < 1) {
         throw RangeError("The number of testing rounds must be greater than zero!");
     }
+
+    const n = BigInt(input);
 
     // Numbers < 2 and even numbers can be trivially excluded from the test
     if (n <= 2n || (n & 1n) === 0n) {
