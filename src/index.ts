@@ -2,13 +2,13 @@ import crypto from "node:crypto";
 
 // Find s and d such that n − 1 = 2^s * d by factorizing out powers of 2
 const findSD = (n: bigint): { s: bigint, d: bigint } => {
-    let s = 0n;
-    let d = (n - 1n);
+    let s = BigInt(0);
+    let d = (n - BigInt(1));
 
     // While the d is even
-    while ((d & 1n) === 0n) {
+    while ((d & BigInt(1)) === BigInt(0)) {
         s++;
-        d >>= 1n; // Faster than division by 2
+        d >>= BigInt(1); // Faster than division by 2
     }
 
     return { s, d }
@@ -20,21 +20,21 @@ const random = (low: bigint, high: bigint): bigint => {
     const length = range.toString(2).length; // Bigint doesn't support log2
     const bytes = crypto.getRandomValues(new Uint8Array(length));
 
-    return low + bytes.reduce((acc, byte) => ((acc + BigInt(byte & 1)) << 1n) , BigInt(0));
+    return low + bytes.reduce((acc, byte) => ((acc + BigInt(byte & 1)) << BigInt(1)) , BigInt(0));
 }
 
 // Return a modular exponentiation that equals
 // b^e mod n
 const modExp = (b: bigint, e: bigint, n: bigint): bigint => {
-    let result = 1n;
+    let result = BigInt(1);
 
     while (e > 0) {
-        if ((e & 1n) === 0n) {
+        if ((e & BigInt(1)) === BigInt(0)) {
             result = result * b % n;
         }
 
-        e >>= 1n;
-        b = b ** 2n % n;
+        e >>= BigInt(1);
+        b = b ** BigInt(2) % n;
     }
 
     return result;
@@ -49,7 +49,7 @@ const modExp = (b: bigint, e: bigint, n: bigint): bigint => {
  * @param {number} k Number of testing rounds to perform
  * @returns 
  */
-export const isProbablePrime = (input: bigint | string, k: number): boolean => {
+export const isProbablePrime = (input: bigint | string, k: number = 10): boolean => {
     if (k < 1) {
         throw RangeError("The number of testing rounds must be greater than zero!");
     }
@@ -57,7 +57,7 @@ export const isProbablePrime = (input: bigint | string, k: number): boolean => {
     const n = BigInt(input);
 
     // Numbers < 2 and even numbers can be trivially excluded from the test
-    if (n <= 2n || (n & 1n) === 0n) {
+    if (n <= BigInt(2) || (n & BigInt(1)) === BigInt(0)) {
         return false;
     }
 
@@ -65,22 +65,22 @@ export const isProbablePrime = (input: bigint | string, k: number): boolean => {
     const { s, d } = findSD(n);
     
     for (let i = 0; i < k; i++) {
-        let a = random(2n, n - 2n);
+        let a = random(BigInt(2), n - BigInt(2));
         let x = modExp(a, d, n);
-        let y = 0n;
+        let y = BigInt(0);
 
         for (let j = 0; j < s; j++) {
-            y = modExp(x, 2n, n);
+            y = modExp(x, BigInt(2), n);
             
             // Nontrivial square root of 1 modulo n
-            if (y === 1n && x !== 1n && x !== n - 1n) {
+            if (y === BigInt(1) && x !== BigInt(1) && x !== n - BigInt(1)) {
                 return false;
             }
 
             x = y;
         }
 
-        if (y !== 1n) {
+        if (y !== BigInt(1)) {
             return false;
         }
     }

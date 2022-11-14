@@ -2,12 +2,18 @@
   "name": "miller-rabin-ts",
   "version": "1.0.0",
   "description": "A Miller-Rabin primality test implementation for TypeScript",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/jirkavrba/miller-rabin-ts",
   "author": "Jiří Vrba <jiri@vrba.dev>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
-    "@types/node": "^18.11.9"
+    "@types/node": "^18.11.9",
+    "eslint": "^8.27.0",
+    "typescript": "^4.8.4"
   }
 }
