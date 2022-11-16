@@ -13,7 +13,7 @@ const findSD = (n: bigint): { s: bigint, d: bigint } => {
     // While the d is even
     while ((d & one) === zero) {
         s++;
-        d >>= BigInt(1); // Faster than division by 2
+        d >>= one; // Faster than division by 2
     }
 
     return { s, d }
