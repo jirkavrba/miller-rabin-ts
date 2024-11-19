@@ -20,8 +20,8 @@ isProbablePrime(BigInt(2147483647), 40); // true
 
 ### Hol'up, isn't there an existing miller-rabin package?
 
-That's correct my brother in Jesus Christ, however... the `miller-rabin` package
+That's correct, however... the `miller-rabin` package
 
 - doesn't have type definitions, so it cannot be used in TS without describing it manually
 - doesn't work with javascript's built-in `BigInt` type, it uses the `bn.js` implementation instead
-- is a bit messy imo, no offense
+- is a bit messy imo
